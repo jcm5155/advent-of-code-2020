@@ -17,7 +17,6 @@ func (h *Handler) Day1() (int, int) {
 		}
 		pzl = append(pzl, j)
 	}
-
 	return d1p1(pzl), d1p2(pzl)
 }
 
