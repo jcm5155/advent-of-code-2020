@@ -21,8 +21,8 @@ var d4Fields = map[string]*regexp.Regexp{
 func (h *Handler) Day4() (int, int) {
 	pzl := util.ReadPuzzleInput("4", "\n\n")
 	p1, p2 := 0, 0
-	for idx := range pzl {
-		fullPP := strings.Split(strings.ReplaceAll(pzl[idx], "\n", " "), " ")
+	for _, passport := range pzl {
+		fullPP := strings.Fields(passport)
 		if len(fullPP) < 7 {
 			continue
 		}
