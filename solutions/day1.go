@@ -8,7 +8,7 @@ import (
 
 // Day1 solution
 func (h *Handler) Day1() (int, int) {
-	p := util.ReadPuzzleInput("1")
+	p := util.ReadPuzzleInput("1", "\n")
 	pzl := []int{}
 	for _, i := range p {
 		j, err := strconv.Atoi(i)

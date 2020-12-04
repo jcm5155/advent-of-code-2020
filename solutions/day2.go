@@ -9,7 +9,7 @@ import (
 
 // Day2 solution
 func (h *Handler) Day2() (int, int) {
-	pzl := util.ReadPuzzleInput("2")
+	pzl := util.ReadPuzzleInput("2", "\n")
 	return d2p1(pzl), d2p2(pzl)
 }
 

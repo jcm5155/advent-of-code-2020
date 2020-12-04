@@ -6,7 +6,7 @@ import (
 
 // Day3 solution
 func (h *Handler) Day3() (int, int) {
-	pzl := util.ReadPuzzleInput("3")
+	pzl := util.ReadPuzzleInput("3", "\n")
 	return d3(pzl)
 }
 
