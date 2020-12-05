@@ -12,23 +12,17 @@ import (
 func (h *Handler) Day5() (int, int) {
 	r := strings.NewReplacer("F", "0", "B", "1", "L", "0", "R", "1")
 	pzl := strings.Split(r.Replace(util.ReadRawPuzzleInput("5")), "\n")
-	seatIDs := []int{}
-	p1, p2 := 0, 0
+	ids := []int{}
 	for _, s := range pzl {
 		row, _ := strconv.ParseInt(s[:7], 2, 64)
 		col, _ := strconv.ParseInt(s[7:], 2, 64)
-		seatID := int(row*8 + col)
-		seatIDs = append(seatIDs, seatID)
-		if seatID > p1 {
-			p1 = seatID
+		ids = append(ids, int(row*8+col))
+	}
+	sort.Ints(ids)
+	for i, v := range ids {
+		if ids[i+1]-v == 2 {
+			return ids[len(ids)-1], v + 1
 		}
 	}
-	sort.Ints(seatIDs)
-	for i, v := range seatIDs {
-		if seatIDs[i+1]-v == 2 {
-			p2 = v + 1
-			break
-		}
-	}
-	return p1, p2
+	panic("well this is awkward")
 }
