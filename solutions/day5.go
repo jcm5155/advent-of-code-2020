@@ -14,9 +14,8 @@ func (h *Handler) Day5() (int, int) {
 	pzl := strings.Split(r.Replace(util.ReadRawPuzzleInput("5")), "\n")
 	ids := []int{}
 	for _, s := range pzl {
-		row, _ := strconv.ParseInt(s[:7], 2, 64)
-		col, _ := strconv.ParseInt(s[7:], 2, 64)
-		ids = append(ids, int(row*8+col))
+		sid, _ := strconv.ParseInt(s, 2, 16)
+		ids = append(ids, int(sid))
 	}
 	sort.Ints(ids)
 	for i, v := range ids {
