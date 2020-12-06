@@ -11,38 +11,33 @@ func (h *Handler) Day1() (int, int) {
 	p := util.ReadPuzzleInput("1", "\n")
 	pzl := []int{}
 	for _, i := range p {
-		j, err := strconv.Atoi(i)
-		if err != nil {
-			panic(err)
-		}
+		j, _ := strconv.Atoi(i)
 		pzl = append(pzl, j)
 	}
-	return d1p1(pzl), d1p2(pzl)
-}
 
-func d1p1(pzl []int) int {
+	p1, p2 := 0, 0
+	p1Found, p2Found := false, false
 	for i, ival := range pzl {
-		c := 2020 - ival
 		for j := i + 1; j < len(pzl); j++ {
-			if pzl[j] == c {
-				return ival * pzl[j]
-			}
-		}
-	}
-	panic("WHOOPSIES - Didn't find an answer for Day 1 Part 1")
-}
-
-func d1p2(pzl []int) int {
-	for i := range pzl {
-		for j := i + 1; j < len(pzl); j++ {
-			if pzl[i]+pzl[j] < 2020 {
+			switch c := ival + pzl[j]; {
+			case c == 2020:
+				p1 = ival * pzl[j]
+				p1Found = true
+			case c < 2020:
 				for k := j + 1; k < len(pzl); k++ {
-					if pzl[i]+pzl[j]+pzl[k] == 2020 {
-						return pzl[i] * pzl[j] * pzl[k]
+					if c+pzl[k] == 2020 {
+						p2 = ival * pzl[j] * pzl[k]
+						p2Found = true
+						break
 					}
 				}
+			default:
+				break
+			}
+			if p1Found && p2Found {
+				return p1, p2
 			}
 		}
 	}
-	panic("WHOOPSIES - Didn't find an answer for Day 1 Part 2")
+	panic("i swear this usually never happens!")
 }

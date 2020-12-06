@@ -10,55 +10,36 @@ import (
 // Day2 solution
 func (h *Handler) Day2() (int, int) {
 	pzl := util.ReadPuzzleInput("2", "\n")
-	return d2p1(pzl), d2p2(pzl)
-}
-
-func d2Process(i string) (int, int, byte, string) {
-	parts := strings.Split(i, " ")
-	lims := strings.Split(parts[0], "-")
-	minVal, _ := strconv.Atoi(lims[0])
-	maxVal, _ := strconv.Atoi(lims[1])
-	val := parts[1][0]
-	pass := parts[2]
-	return minVal, maxVal, val, pass
-}
-
-func d2p1(pzl []string) int {
-	validPassCount := 0
+	p1, p2 := 0, 0
 	for _, i := range pzl {
 		minVal, maxVal, val, pass := d2Process(i)
-		valCount := 0
-		for _, c := range []byte(pass) {
-			if c == val {
-				valCount++
-			}
-		}
+		valCount := strings.Count(pass, val)
 		if minVal <= valCount && maxVal >= valCount {
-			validPassCount++
+			p1++
 		}
-	}
-	return validPassCount
-}
-
-func d2p2(pzl []string) int {
-	validPassCount := 0
-	for _, i := range pzl {
-		minVal, maxVal, val, pass := d2Process(i)
 		minVal--
 		maxVal--
 		exactlyOne := false
-
-		if minVal <= len(pass) && pass[minVal] == val {
+		if minVal <= len(pass) && pass[minVal] == val[0] {
 			exactlyOne = !exactlyOne
 		}
-
-		if maxVal <= len(pass) && pass[maxVal] == val {
+		if maxVal <= len(pass) && pass[maxVal] == val[0] {
 			exactlyOne = !exactlyOne
 		}
-
 		if exactlyOne == true {
-			validPassCount++
+			p2++
 		}
+
 	}
-	return validPassCount
+	return p1, p2
+}
+
+func d2Process(i string) (int, int, string, string) {
+	parts := strings.Fields(i)
+	lims := strings.Split(parts[0], "-")
+	minVal, _ := strconv.Atoi(lims[0])
+	maxVal, _ := strconv.Atoi(lims[1])
+	val := parts[1][:1]
+	pass := parts[2]
+	return minVal, maxVal, val, pass
 }

@@ -28,9 +28,9 @@ func d3(pzl []string) (int, int) {
 	}
 
 	p1 := treeCounts[1]
-	p2 := treeCounts[0]
-	for i := 1; i < len(treeCounts); i++ {
-		p2 *= treeCounts[i]
+	p2 := 1
+	for _, i := range treeCounts {
+		p2 *= i
 	}
 	return p1, p2
 }
