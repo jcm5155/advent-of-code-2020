@@ -1,22 +1,23 @@
 package solutions
 
 import (
-	"strings"
-
 	"github.com/jcm5155/advent-of-code-2020/util"
 )
 
 // Day6 solution
 func (h *Handler) Day6() (int, int) {
+	var nl = rune('\n')
 	pzl := util.ReadPuzzleInput("6", "\n\n")
 	p1, p2 := 0, 0
 	for _, group := range pzl {
-		people := strings.Fields(group)
-		numPeople := len(people)
-		joinedPeople := strings.Join(people, "")
+		numPeople := 1
 		m := make(map[rune]int)
-		for _, c := range joinedPeople {
-			m[c]++
+		for _, c := range group {
+			if c == nl {
+				numPeople++
+			} else {
+				m[c]++
+			}
 		}
 		for _, v := range m {
 			p1++
