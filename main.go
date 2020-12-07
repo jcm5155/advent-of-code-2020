@@ -10,13 +10,13 @@ import (
 func main() {
 	if len(os.Args) == 1 {
 		for i := 1; i < 26; i++ {
-			solutions.Day(i).PrintSolutions()
+			solutions.Day(i).Print()
 		}
 	} else {
 		for _, i := range os.Args[1:] {
 			j, err := strconv.Atoi(i)
 			if err == nil {
-				solutions.Day(j).PrintSolutions()
+				solutions.Day(j).Print()
 			}
 		}
 	}

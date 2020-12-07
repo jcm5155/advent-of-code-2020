@@ -17,12 +17,10 @@ type Solution struct {
 	PartTwo reflect.Value
 }
 
-// PrintSolutions - prints solution parts for a given Solution (or skips if no solutions are found)
-func (s *Solution) PrintSolutions() {
+// Print - prints solution parts for a given Solution (or skips if no solutions are found)
+func (s *Solution) Print() {
 	if !reflect.ValueOf(s.PartOne).IsZero() || !reflect.ValueOf(s.PartTwo).IsZero() {
-		fmt.Printf("*-=DAY %v=-*\n", s.DayNum)
-		fmt.Printf("p1: %v\n", s.PartOne)
-		fmt.Printf("p2: %v\n\n", s.PartTwo)
+		fmt.Printf("*-=DAY %v=-*\np1: %v\np2: %v\n\n", s.DayNum, s.PartOne, s.PartTwo)
 	}
 }
 
