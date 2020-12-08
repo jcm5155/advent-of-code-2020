@@ -2,7 +2,6 @@ package solutions
 
 import (
 	"strconv"
-	"strings"
 
 	"github.com/jcm5155/advent-of-code-2020/util"
 )
@@ -11,7 +10,7 @@ import (
 func (h *Handler) Day8() (int, int) {
 	pzl := util.ReadPuzzleInput("8", "\n")
 	c := make(chan int, 1)
-	p1 := d8resolveTimeline(pzl, c)
+	p1 := d8resolveTimeline(pzl, -1, "", c)
 
 	for idx, val := range pzl {
 		select {
@@ -29,17 +28,14 @@ func (h *Handler) Day8() (int, int) {
 		default:
 			continue
 		}
-		var cp = make([]string, len(pzl))
-		copy(cp, pzl)
-		cp[idx] = cmd + val[3:]
-		go d8resolveTimeline(cp, c)
+		go d8resolveTimeline(pzl, idx, cmd+val[3:], c)
 	}
 	// block just in case
 	p2 := <-c
 	return p1, p2
 }
 
-func d8resolveTimeline(pzl []string, c chan int) int {
+func d8resolveTimeline(pzl []string, replaceIdx int, replaceVal string, c chan int) int {
 	idx, acc := 0, 0
 	idxVisited := map[int]bool{}
 	for {
@@ -52,9 +48,12 @@ func d8resolveTimeline(pzl []string, c chan int) int {
 		}
 
 		idxVisited[idx] = true
-		parts := strings.Fields(pzl[idx])
-		cmd := parts[0]
-		amt, _ := strconv.Atoi(parts[1])
+		val := pzl[idx]
+		if idx == replaceIdx {
+			val = replaceVal
+		}
+		cmd := val[:3]
+		amt, _ := strconv.Atoi(val[4:])
 
 		switch cmd {
 		case "acc":
