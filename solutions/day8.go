@@ -6,65 +6,58 @@ import (
 	"github.com/jcm5155/advent-of-code-2020/util"
 )
 
+type d8visited map[int]bool
+
 // Day8 solution
 func (h *Handler) Day8() (int, int) {
 	pzl := util.ReadPuzzleInput("8", "\n")
 	c := make(chan int, 1)
-	p1 := d8resolveTimeline(pzl, -1, "", c)
-
-	for idx, val := range pzl {
-		select {
-		case p2 := <-c:
-			return p1, p2
-		default:
-			break
-		}
-		cmd := val[:3]
-		switch cmd {
-		case "nop":
-			cmd = "jmp"
-		case "jmp":
-			cmd = "nop"
-		default:
-			continue
-		}
-		go d8resolveTimeline(pzl, idx, cmd+val[3:], c)
-	}
-	// block just in case
+	p1 := d8resolveTimeline(pzl, c, 0, 0, d8visited{}, true, pzl[0])
 	p2 := <-c
 	return p1, p2
 }
 
-func d8resolveTimeline(pzl []string, replaceIdx int, replaceVal string, c chan int) int {
-	idx, acc := 0, 0
-	idxVisited := map[int]bool{}
+func d8resolveTimeline(pzl []string, c chan int, idx, acc int, visited d8visited, canBranch bool, override string) int {
+	firstIteration := true
 	for {
 		if idx == len(pzl)-1 {
 			c <- acc
 			return 0
 		}
-		if idxVisited[idx] {
+		if visited[idx] {
 			return acc
 		}
 
-		idxVisited[idx] = true
-		val := pzl[idx]
-		if idx == replaceIdx {
-			val = replaceVal
+		instruction := pzl[idx]
+		if firstIteration {
+			instruction = override
+			firstIteration = false
 		}
-		cmd := val[:3]
-		amt, _ := strconv.Atoi(val[4:])
+		cmd := instruction[:3]
+		amt, _ := strconv.Atoi(instruction[4:])
 
-		switch cmd {
-		case "acc":
+		if cmd == "acc" {
+			visited[idx] = true
 			acc += amt
 			idx++
-		case "nop":
-			idx++
-		case "jmp":
-			idx += amt
-		default:
-			panic("this should never happen")
+		} else {
+			idxRef := idx
+			if cmd == "nop" {
+				override = "jmp" + instruction[3:]
+				idx++
+			} else {
+				override = "nop" + instruction[3:]
+				idx += amt
+			}
+			if canBranch {
+				visitedCopy := d8visited{}
+				for k, v := range visited {
+					visitedCopy[k] = v
+				}
+				go d8resolveTimeline(pzl, c, idxRef, acc, visitedCopy, false, override)
+			}
+			visited[idxRef] = true
 		}
+
 	}
 }
