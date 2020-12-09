@@ -2,6 +2,7 @@ package util
 
 import (
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
@@ -21,4 +22,19 @@ func ReadRawPuzzleInput(filenum string) string {
 		panic(err)
 	}
 	return string(pzl)
+}
+
+// ReadIntPuzzleInput - reads puzzle inputs as ints, sep on \n
+func ReadIntPuzzleInput(filenum string) []int {
+	p, err := ioutil.ReadFile("./inputs/day" + filenum + ".txt")
+	if err != nil {
+		panic(err)
+	}
+	pz := strings.Split(string(p), "\n")
+	pzl := []int{}
+	for _, i := range pz {
+		a, _ := strconv.Atoi(i)
+		pzl = append(pzl, a)
+	}
+	return pzl
 }
