@@ -8,7 +8,7 @@ import (
 	"github.com/jcm5155/advent-of-code-2020/util"
 )
 
-//Day12 solution
+// Day12 solution
 func (h *Handler) Day12() (float64, float64) {
 	pzl := util.ReadPuzzleInput("12", "\n")
 	head, heading := map[int]byte{0: 'N', 90: 'E', 180: 'S', 270: 'W'}, 90
